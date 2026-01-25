@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SALVUSLINE</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Header/Navigation -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-left">
+                <div class="logo">
+                    <img src="assets/logo.svg" alt="Salvusline Logo">
+                </div>
+                <nav class="nav">
+                    <a href="#about" class="nav-link">About US</a>
+                    <a href="#dogs" class="nav-link">Our Dogs</a>
+                </nav>
+            </div>
+            <div class="header-right">
+                <div class="social-links">
+                    <a href="https://www.instagram.com/kateryna_salvusline/" target="_blank" rel="noopener noreferrer"
+                        class="social-link" aria-label="Instagram">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M12 2C14.717 2 15.056 2.01 16.122 2.06C17.187 2.11 17.912 2.277 18.55 2.525C19.21 2.779 19.766 3.123 20.322 3.678C20.8305 4.1779 21.224 4.78259 21.475 5.45C21.722 6.087 21.89 6.813 21.94 7.878C21.987 8.944 22 9.283 22 12C22 14.717 21.99 15.056 21.94 16.122C21.89 17.187 21.722 17.912 21.475 18.55C21.2247 19.2178 20.8311 19.8226 20.322 20.322C19.822 20.8303 19.2173 21.2238 18.55 21.475C17.913 21.722 17.187 21.89 16.122 21.94C15.056 21.987 14.717 22 12 22C9.283 22 8.944 21.99 7.878 21.94C6.813 21.89 6.088 21.722 5.45 21.475C4.78233 21.2245 4.17753 20.8309 3.678 20.322C3.16941 19.8222 2.77593 19.2175 2.525 18.55C2.277 17.913 2.11 17.187 2.06 16.122C2.013 15.056 2 14.717 2 12C2 9.283 2.01 8.944 2.06 7.878C2.11 6.812 2.277 6.088 2.525 5.45C2.77524 4.78218 3.1688 4.17732 3.678 3.678C4.17767 3.16923 4.78243 2.77573 5.45 2.525C6.088 2.277 6.812 2.11 7.878 2.06C8.944 2.013 9.283 2 12 2ZM12 7C10.6739 7 9.40215 7.52678 8.46447 8.46447C7.52678 9.40215 7 10.6739 7 12C7 13.3261 7.52678 14.5979 8.46447 15.5355C9.40215 16.4732 10.6739 17 12 17C13.3261 17 14.5979 16.4732 15.5355 15.5355C16.4732 14.5979 17 13.3261 17 12C17 10.6739 16.4732 9.40215 15.5355 8.46447C14.5979 7.52678 13.3261 7 12 7ZM18.5 6.75C18.5 6.41848 18.3683 6.10054 18.1339 5.86612C17.8995 5.6317 17.5815 5.5 17.25 5.5C16.9185 5.5 16.6005 5.6317 16.3661 5.86612C16.1317 6.10054 16 6.41848 16 6.75C16 7.08152 16.1317 7.39946 16.3661 7.63388C16.6005 7.8683 16.9185 8 17.25 8C17.5815 8 17.8995 7.8683 18.1339 7.63388C18.3683 7.39946 18.5 7.08152 18.5 6.75ZM12 9C12.7956 9 13.5587 9.31607 14.1213 9.87868C14.6839 10.4413 15 11.2044 15 12C15 12.7956 14.6839 13.5587 14.1213 14.1213C13.5587 14.6839 12.7956 15 12 15C11.2044 15 10.4413 14.6839 9.87868 14.1213C9.31607 13.5587 9 12.7956 9 12C9 11.2044 9.31607 10.4413 9.87868 9.87868C10.4413 9.31607 11.2044 9 12 9Z"
+                                fill="currentColor" />
+                        </svg>
+                    </a>
+                    <a href="https://www.tiktok.com/@bullterrier_place" target="_blank" rel="noopener noreferrer"
+                        class="social-link" aria-label="TikTok">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M19.59 6.69C19.4776 6.69 19.3656 6.6789 19.2551 6.657C17.8843 6.41668 16.6863 5.56147 16.0148 4.33596C15.5205 3.42972 15.3331 2.38683 15.4813 1.36719H12.1813V15.0672C12.1813 15.4815 12.1813 15.8911 12.1517 16.2912C12.0515 17.6185 11.0053 18.6672 9.67126 18.6672C8.89835 18.6672 8.17699 18.3767 7.63516 17.8892C6.75516 17.1014 6.35516 15.8672 6.67126 14.6672C7.10127 13.0672 8.55126 11.9672 10.1813 11.9672C10.4516 11.9672 10.7173 11.9967 10.9764 12.0508V8.66719C10.7173 8.63344 10.4516 8.61719 10.1813 8.61719C6.68126 8.61719 3.83126 11.4672 3.83126 14.9672C3.83126 16.6172 4.46126 18.1172 5.49126 19.2472C6.54126 20.3972 8.02126 21.0172 9.67126 21.0172C13.1713 21.0172 15.5313 18.4672 15.5313 14.9672V9.13719C16.6913 9.95719 18.1013 10.4272 19.59 10.4472V6.69Z"
+                                fill="currentColor" />
+                        </svg>
+                    </a>
+                    <a href="https://www.facebook.com/kate.kosovets" target="_blank" rel="noopener noreferrer"
+                        class="social-link" aria-label="Facebook">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 17.9895 4.3882 22.954 10.125 23.8542V15.4688H7.07812V12H10.125V9.35625C10.125 6.34875 11.9166 4.6875 14.6576 4.6875C15.9701 4.6875 17.3438 4.92188 17.3438 4.92188V7.875H15.8306C14.34 7.875 13.875 8.80008 13.875 9.75V12H17.2031L16.6711 15.4688H13.875V23.8542C19.6118 22.954 24 17.9895 24 12Z"
+                                fill="currentColor" />
+                        </svg>
+                    </a>
+                </div>
+                <button class="menu-toggle" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <div class="mobile-menu-header">
+            <div class="logo">
+                <img src="assets/logo.svg" alt="Salvusline Logo">
+            </div>
+            <button class="menu-close" aria-label="Close menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 6L6 18M6 6L18 18" stroke="white" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button>
+        </div>
+        <nav class="mobile-nav">
+            <a href="#about" class="mobile-nav-link">About US</a>
+            <a href="#dogs" class="mobile-nav-link">Our Dogs</a>
+        </nav>
+        <div class="mobile-social">
+            <a href="https://www.instagram.com/kateryna_salvusline/" target="_blank" rel="noopener noreferrer"
+                class="mobile-social-link">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M12 2C14.717 2 15.056 2.01 16.122 2.06C17.187 2.11 17.912 2.277 18.55 2.525C19.21 2.779 19.766 3.123 20.322 3.678C20.8305 4.1779 21.224 4.78259 21.475 5.45C21.722 6.087 21.89 6.813 21.94 7.878C21.987 8.944 22 9.283 22 12C22 14.717 21.99 15.056 21.94 16.122C21.89 17.187 21.722 17.912 21.475 18.55C21.2247 19.2178 20.8311 19.8226 20.322 20.322C19.822 20.8303 19.2173 21.2238 18.55 21.475C17.913 21.722 17.187 21.89 16.122 21.94C15.056 21.987 14.717 22 12 22C9.283 22 8.944 21.99 7.878 21.94C6.813 21.89 6.088 21.722 5.45 21.475C4.78233 21.2245 4.17753 20.8309 3.678 20.322C3.16941 19.8222 2.77593 19.2175 2.525 18.55C2.277 17.913 2.11 17.187 2.06 16.122C2.013 15.056 2 14.717 2 12C2 9.283 2.01 8.944 2.06 7.878C2.11 6.812 2.277 6.088 2.525 5.45C2.77524 4.78218 3.1688 4.17732 3.678 3.678C4.17767 3.16923 4.78243 2.77573 5.45 2.525C6.088 2.277 6.812 2.11 7.878 2.06C8.944 2.013 9.283 2 12 2ZM12 7C10.6739 7 9.40215 7.52678 8.46447 8.46447C7.52678 9.40215 7 10.6739 7 12C7 13.3261 7.52678 14.5979 8.46447 15.5355C9.40215 16.4732 10.6739 17 12 17C13.3261 17 14.5979 16.4732 15.5355 15.5355C16.4732 14.5979 17 13.3261 17 12C17 10.6739 16.4732 9.40215 15.5355 8.46447C14.5979 7.52678 13.3261 7 12 7ZM18.5 6.75C18.5 6.41848 18.3683 6.10054 18.1339 5.86612C17.8995 5.6317 17.5815 5.5 17.25 5.5C16.9185 5.5 16.6005 5.6317 16.3661 5.86612C16.1317 6.10054 16 6.41848 16 6.75C16 7.08152 16.1317 7.39946 16.3661 7.63388C16.6005 7.8683 16.9185 8 17.25 8C17.5815 8 17.8995 7.8683 18.1339 7.63388C18.3683 7.39946 18.5 7.08152 18.5 6.75ZM12 9C12.7956 9 13.5587 9.31607 14.1213 9.87868C14.6839 10.4413 15 11.2044 15 12C15 12.7956 14.6839 13.5587 14.1213 14.1213C13.5587 14.6839 12.7956 15 12 15C11.2044 15 10.4413 14.6839 9.87868 14.1213C9.31607 13.5587 9 12.7956 9 12C9 11.2044 9.31607 10.4413 9.87868 9.87868C10.4413 9.31607 11.2044 9 12 9Z"
+                        fill="currentColor" />
+                </svg>
+                <span>Instagram</span>
+            </a>
+            <a href="https://www.tiktok.com/@bullterrier_place" target="_blank" rel="noopener noreferrer"
+                class="mobile-social-link">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M19.59 6.69C19.4776 6.69 19.3656 6.6789 19.2551 6.657C17.8843 6.41668 16.6863 5.56147 16.0148 4.33596C15.5205 3.42972 15.3331 2.38683 15.4813 1.36719H12.1813V15.0672C12.1813 15.4815 12.1813 15.8911 12.1517 16.2912C12.0515 17.6185 11.0053 18.6672 9.67126 18.6672C8.89835 18.6672 8.17699 18.3767 7.63516 17.8892C6.75516 17.1014 6.35516 15.8672 6.67126 14.6672C7.10127 13.0672 8.55126 11.9672 10.1813 11.9672C10.4516 11.9672 10.7173 11.9967 10.9764 12.0508V8.66719C10.7173 8.63344 10.4516 8.61719 10.1813 8.61719C6.68126 8.61719 3.83126 11.4672 3.83126 14.9672C3.83126 16.6172 4.46126 18.1172 5.49126 19.2472C6.54126 20.3972 8.02126 21.0172 9.67126 21.0172C13.1713 21.0172 15.5313 18.4672 15.5313 14.9672V9.13719C16.6913 9.95719 18.1013 10.4272 19.59 10.4472V6.69Z"
+                        fill="currentColor" />
+                </svg>
+                <span>TikTok</span>
+            </a>
+            <a href="https://www.facebook.com/kate.kosovets" target="_blank" rel="noopener noreferrer"
+                class="mobile-social-link">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 17.9895 4.3882 22.954 10.125 23.8542V15.4688H7.07812V12H10.125V9.35625C10.125 6.34875 11.9166 4.6875 14.6576 4.6875C15.9701 4.6875 17.3438 4.92188 17.3438 4.92188V7.875H15.8306C14.34 7.875 13.875 8.80008 13.875 9.75V12H17.2031L16.6711 15.4688H13.875V23.8542C19.6118 22.954 24 17.9895 24 12Z"
+                        fill="currentColor" />
+                </svg>
+                <span>Facebook</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-video-wrapper">
+            <video class="hero-video hero-video--desktop" autoplay loop muted playsinline>
+                <source src="assets/hero-desktop.webm" type="video/webm">
+            </video>
+            <video class="hero-video hero-video--mobile" autoplay loop muted playsinline>
+                <source src="assets/hero-mobile.webm" type="video/webm">
+            </video>
+            <div class="hero-mask"></div>
+        </div>
+
+        <div class="hero-content">
+            <h1 class="hero-title">SALVUSLINE</h1>
+        </div>
+
+        <div class="scroll-indicator">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5V19M12 19L5 12M12 19L19 12" stroke="white" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="about">
+        <div class="about-container">
+            <h2 class="about-title">ABOUT US</h2>
+
+            <div class="about-content">
+                <div class="about-text">
+                    <p>We are a community breaking stereotypes about Bull Terriers. Our focus lies in aesthetics,
+                        intelligencee, and responsible breeding. We unite owners and enthusiasts to build a culture
+                        where a dog is more than just a pet–it is a reflection of your lifestyle and care.</p>
+                </div>
+
+                <div class="about-stats">
+                    <div class="stat">
+                        <div class="stat-number">100 +</div>
+                        <div class="stat-label">PUPPIES BORN</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">5 +</div>
+                        <div class="stat-label">YEARS OF EXPERIENCE</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">SUPPORT AND ADVICE</div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="cta-button">WRITE IN DIRECT MESSAGE</button>
+
+            <div class="about-gallery">
+                <div class="gallery-item">
+                    <img src="assets/About-1.jpg" alt="Bull Terrier 1">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/About-2.png" alt="Bull Terrier 2">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/About-3.jpg" alt="Bull Terrier 3">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Dogs Section -->
+    <section id="dogs" class="dogs">
+        <div class="dogs-header">
+            <div class="dogs-header-container">
+                <h2 class="dogs-title">OUR DOGS</h2>
+                <div class="dogs-description">
+                    <p>Bull Terriers: Love at first sight. Seeking a loyal guardian and energetic friend? Choose your
+                        perfect match from our wide selection of exceptional dogs.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="carousel-wrapper">
+            <div class="carousel">
+                <div class="carousel-track">
+                    <div class="carousel-item">
+                        <img src="assets/dog-carousel-1.jpg" alt="Bull Terrier">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/dog-carousel-2.jpg" alt="Bull Terrier">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/dog-carousel-3.jpg" alt="Bull Terrier">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/dog-carousel-4.jpg" alt="Bull Terrier">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/dog-carousel-5.jpg" alt="Bull Terrier">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/dog-carousel-6.jpg" alt="Bull Terrier">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/dog-carousel-7.jpg" alt="Bull Terrier">
+                    </div>
+                    <!-- Duplicate for seamless loop -->
+                    <div class="carousel-item">
+                        <img src="assets/dog-carousel-1.jpg" alt="Bull Terrier">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/dog-carousel-2.jpg" alt="Bull Terrier">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/dog-carousel-3.jpg" alt="Bull Terrier">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/dog-carousel-4.jpg" alt="Bull Terrier">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/dog-carousel-5.jpg" alt="Bull Terrier">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/dog-carousel-6.jpg" alt="Bull Terrier">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/dog-carousel-7.jpg" alt="Bull Terrier">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dogs-footer">
+            <div class="dogs-footer-text">SALVUSLINE</div>
+        </div>
+    </section>
+
+    <!-- Reserve Section -->
+    <section class="reserve">
+        <div class="reserve-container">
+            <div class="reserve-content">
+                <h2 class="reserve-title">
+                    RESERVE YOUR<br>PUPPY
+                    <svg class="reserve-arrow" width="40" height="40" viewBox="0 0 24 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 5V19M12 19L5 12M12 19L19 12" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </h2>
+                <p class="reserve-description">
+                    Book your puppy today and get ready for a new family member to
+                    arrive!
+                </p>
+                <button class="reserve-button">RESERVE NOW</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Media Section -->
+    <section class="social-section">
+        <div class="social-container">
+            <h2 class="social-title">JOIN US IN SOCIAL MEDIA</h2>
+
+            <div class="social-grid">
+                <div class="social-embeds">
+                    <div class="instagram-embed">
+                        <iframe src="https://www.instagram.com/kateryna_salvusline/embed/" width="100%" height="600"
+                            frameborder="0" scrolling="yes" allowtransparency="false"></iframe>
+                    </div>
+
+                    <div class="tiktok-embed">
+                        <iframe src="https://www.tiktok.com/embed/@bullterrier_place" width="100%" height="600"
+                            frameborder="0" scrolling="yes" allowtransparency="false"></iframe>
+                    </div>
+                </div>
+
+                <div class="social-info">
+                    <p class="social-description">
+                        Follow our journey and stay updated with the latest news about our Bull Terriers, puppies, and
+                        breeding updates.
+                    </p>
+
+                    <div class="social-links-large">
+                        <a href="https://instagram.com/kateryna_salvusline/" target="_blank" rel="noopener noreferrer"
+                            class="social-link-large">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M12 2C14.717 2 15.056 2.01 16.122 2.06C17.187 2.11 17.912 2.277 18.55 2.525C19.21 2.779 19.766 3.123 20.322 3.678C20.8305 4.1779 21.224 4.78259 21.475 5.45C21.722 6.087 21.89 6.813 21.94 7.878C21.987 8.944 22 9.283 22 12C22 14.717 21.99 15.056 21.94 16.122C21.89 17.187 21.722 17.912 21.475 18.55C21.2247 19.2178 20.8311 19.8226 20.322 20.322C19.822 20.8303 19.2173 21.2238 18.55 21.475C17.913 21.722 17.187 21.89 16.122 21.94C15.056 21.987 14.717 22 12 22C9.283 22 8.944 21.99 7.878 21.94C6.813 21.89 6.088 21.722 5.45 21.475C4.78233 21.2245 4.17753 20.8309 3.678 20.322C3.16941 19.8222 2.77593 19.2175 2.525 18.55C2.277 17.913 2.11 17.187 2.06 16.122C2.013 15.056 2 14.717 2 12C2 9.283 2.01 8.944 2.06 7.878C2.11 6.812 2.277 6.088 2.525 5.45C2.77524 4.78218 3.1688 4.17732 3.678 3.678C4.17767 3.16923 4.78243 2.77573 5.45 2.525C6.088 2.277 6.812 2.11 7.878 2.06C8.944 2.013 9.283 2 12 2ZM12 7C10.6739 7 9.40215 7.52678 8.46447 8.46447C7.52678 9.40215 7 10.6739 7 12C7 13.3261 7.52678 14.5979 8.46447 15.5355C9.40215 16.4732 10.6739 17 12 17C13.3261 17 14.5979 16.4732 15.5355 15.5355C16.4732 14.5979 17 13.3261 17 12C17 10.6739 16.4732 9.40215 15.5355 8.46447C14.5979 7.52678 13.3261 7 12 7ZM18.5 6.75C18.5 6.41848 18.3683 6.10054 18.1339 5.86612C17.8995 5.6317 17.5815 5.5 17.25 5.5C16.9185 5.5 16.6005 5.6317 16.3661 5.86612C16.1317 6.10054 16 6.41848 16 6.75C16 7.08152 16.1317 7.39946 16.3661 7.63388C16.6005 7.8683 16.9185 8 17.25 8C17.5815 8 17.8995 7.8683 18.1339 7.63388C18.3683 7.39946 18.5 7.08152 18.5 6.75ZM12 9C12.7956 9 13.5587 9.31607 14.1213 9.87868C14.6839 10.4413 15 11.2044 15 12C15 12.7956 14.6839 13.5587 14.1213 14.1213C13.5587 14.6839 12.7956 15 12 15C11.2044 15 10.4413 14.6839 9.87868 14.1213C9.31607 13.5587 9 12.7956 9 12C9 11.2044 9.31607 10.4413 9.87868 9.87868C10.4413 9.31607 11.2044 9 12 9Z"
+                                    fill="currentColor" />
+                            </svg>
+                            <span>@kateryna_salvusline</span>
+                        </a>
+
+                        <a href="https://www.tiktok.com/@bullterrier_place" target="_blank" rel="noopener noreferrer"
+                            class="social-link-large">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M19.59 6.69C19.4776 6.69 19.3656 6.6789 19.2551 6.657C17.8843 6.41668 16.6863 5.56147 16.0148 4.33596C15.5205 3.42972 15.3331 2.38683 15.4813 1.36719H12.1813V15.0672C12.1813 15.4815 12.1813 15.8911 12.1517 16.2912C12.0515 17.6185 11.0053 18.6672 9.67126 18.6672C8.89835 18.6672 8.17699 18.3767 7.63516 17.8892C6.75516 17.1014 6.35516 15.8672 6.67126 14.6672C7.10127 13.0672 8.55126 11.9672 10.1813 11.9672C10.4516 11.9672 10.7173 11.9967 10.9764 12.0508V8.66719C10.7173 8.63344 10.4516 8.61719 10.1813 8.61719C6.68126 8.61719 3.83126 11.4672 3.83126 14.9672C3.83126 16.6172 4.46126 18.1172 5.49126 19.2472C6.54126 20.3972 8.02126 21.0172 9.67126 21.0172C13.1713 21.0172 15.5313 18.4672 15.5313 14.9672V9.13719C16.6913 9.95719 18.1013 10.4272 19.59 10.4472V6.69Z"
+                                    fill="currentColor" />
+                            </svg>
+                            <span>@bullterrier_place</span>
+                        </a>
+
+                        <a href="https://www.facebook.com/kate.kosovets" target="_blank" rel="noopener noreferrer"
+                            class="social-link-large">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 17.9895 4.3882 22.954 10.125 23.8542V15.4688H7.07812V12H10.125V9.35625C10.125 6.34875 11.9166 4.6875 14.6576 4.6875C15.9701 4.6875 17.3438 4.92188 17.3438 4.92188V7.875H15.8306C14.34 7.875 13.875 8.80008 13.875 9.75V12H17.2031L16.6711 15.4688H13.875V23.8542C19.6118 22.954 24 17.9895 24 12Z"
+                                    fill="currentColor" />
+                            </svg>
+                            <span>Facebook</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="assets/logo.svg" alt="Salvusline Logo">
+                </div>
+                <div class="footer-text">
+                    <p>&copy; 2026 SALVUSLINE. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const menuClose = document.querySelector('.menu-close');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+        function openMenu() {
+            mobileMenu.classList.add('active');
+            document.body.classList.add('menu-open');
+        }
+
+        function closeMenu() {
+            mobileMenu.classList.remove('active');
+            document.body.classList.remove('menu-open');
+        }
+
+        menuToggle.addEventListener('click', openMenu);
+        menuClose.addEventListener('click', closeMenu);
+
+        // Close menu when clicking on a link
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+
+        // Close menu when clicking outside
+        mobileMenu.addEventListener('click', (e) => {
+            if (e.target === mobileMenu) {
+                closeMenu();
+            }
+        });
+    </script>
+</body>
+
+</html>
