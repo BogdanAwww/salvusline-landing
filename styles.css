@@ -442,6 +442,9 @@ body.menu-open {
     border-radius: 50px;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-decoration: none;
+    text-align: center;
+    width: fit-content;
 }
 
 .cta-button:hover {
@@ -641,6 +644,7 @@ body.menu-open {
 }
 
 .reserve-button {
+    display: inline-block;
     padding: 1.25rem 3.5rem;
     background: transparent;
     border: 2px solid #fff;
@@ -651,6 +655,7 @@ body.menu-open {
     border-radius: 50px;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-decoration: none;
 }
 
 .reserve-button:hover {
