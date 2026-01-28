@@ -585,7 +585,7 @@ body.menu-open {
 .reserve {
     position: relative;
     min-height: 100vh;
-    background-image: url('assets/reserve-puppies.png');
+    background-image: url('assets/reserve-puppies.webp');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
