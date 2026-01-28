@@ -564,8 +564,29 @@ body.menu-open {
     }
 
     100% {
-        transform: translateX(calc(-320px * 7 - 2rem * 7));
+        transform: translateX(calc(-320px * 13 - 2rem * 13));
     }
+}
+
+/* Reverse animation for second carousel */
+@keyframes scrollReverse {
+    0% {
+        transform: translateX(calc(-320px * 13 - 2rem * 13));
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+/* Second carousel - hidden on desktop */
+.carousel-wrapper--mobile {
+    display: none;
+}
+
+/* Reverse direction for second carousel */
+.carousel-track--reverse {
+    animation: scrollReverse 40s linear infinite;
 }
 
 .dogs-footer {
@@ -863,7 +884,17 @@ body.menu-open {
         }
 
         100% {
-            transform: translateX(calc(-280px * 7 - 2rem * 7));
+            transform: translateX(calc(-280px * 13 - 2rem * 13));
+        }
+    }
+
+    @keyframes scrollReverse {
+        0% {
+            transform: translateX(calc(-280px * 13 - 2rem * 13));
+        }
+
+        100% {
+            transform: translateX(0);
         }
     }
 
@@ -1013,13 +1044,32 @@ body.menu-open {
         height: 300px;
     }
 
+    .carousel-wrapper {
+        margin-bottom: 2rem;
+    }
+
+    /* Show second carousel on mobile */
+    .carousel-wrapper--mobile {
+        display: block;
+    }
+
     @keyframes scroll {
         0% {
             transform: translateX(0);
         }
 
         100% {
-            transform: translateX(calc(-240px * 7 - 2rem * 7));
+            transform: translateX(calc(-240px * 13 - 2rem * 13));
+        }
+    }
+
+    @keyframes scrollReverse {
+        0% {
+            transform: translateX(calc(-240px * 13 - 2rem * 13));
+        }
+
+        100% {
+            transform: translateX(0);
         }
     }
 
@@ -1186,7 +1236,17 @@ body.menu-open {
         }
 
         100% {
-            transform: translateX(calc(-200px * 7 - 1.5rem * 7));
+            transform: translateX(calc(-200px * 13 - 1.5rem * 13));
+        }
+    }
+
+    @keyframes scrollReverse {
+        0% {
+            transform: translateX(calc(-200px * 13 - 1.5rem * 13));
+        }
+
+        100% {
+            transform: translateX(0);
         }
     }
 
