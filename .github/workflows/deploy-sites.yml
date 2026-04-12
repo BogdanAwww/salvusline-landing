@@ -1,0 +1,111 @@
+name: Deploy breeder sites
+
+on:
+  # Triggered manually from the admin panel "Publish" button
+  workflow_dispatch:
+    inputs:
+      breeder:
+        description: "Breeder slug to build (or 'all')"
+        required: false
+        default: "all"
+
+  # Also runs on every push to main
+  push:
+    branches: [main]
+
+jobs:
+  # ─── Determine which breeders to build ───────────────────────────────────────
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - id: set-matrix
+        run: |
+          INPUT="${{ github.event.inputs.breeder }}"
+          # Hardcoded list of active breeders — add new slugs here when onboarding
+          ALL_BREEDERS='["salvusline"]'
+
+          if [[ -z "$INPUT" || "$INPUT" == "all" ]]; then
+            echo "matrix={\"breeder\":$ALL_BREEDERS}" >> $GITHUB_OUTPUT
+          else
+            echo "matrix={\"breeder\":[\"$INPUT\"]}" >> $GITHUB_OUTPUT
+          fi
+
+  # ─── Build + deploy each breeder site ────────────────────────────────────────
+  build-and-deploy:
+    needs: setup
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.setup.outputs.matrix) }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build site — ${{ matrix.breeder }}
+        working-directory: apps/site
+        env:
+          NEXT_OUTPUT: export
+          BREEDER_SLUG: ${{ matrix.breeder }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SITE_DOMAIN: ${{ secrets.SITE_DOMAIN }}
+        run: pnpm build
+
+      - name: Deploy to Cloudflare Pages — ${{ matrix.breeder }}
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy apps/site/out --project-name=rapid-glade-0cc0 --branch=main
+
+  # ─── Build + deploy admin panel ──────────────────────────────────────────────
+  deploy-admin:
+    runs-on: ubuntu-latest
+    # Only deploy admin on push to main (not on every breeder publish trigger)
+    if: github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build admin
+        working-directory: apps/admin
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          VITE_GH_PAT: ${{ secrets.VITE_GH_PAT }}
+          VITE_GH_OWNER: ${{ secrets.VITE_GH_OWNER }}
+          VITE_GH_REPO: ${{ secrets.VITE_GH_REPO }}
+        run: pnpm build
+
+      - name: Deploy admin to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy apps/admin/dist --project-name=autumn-meadow-5894 --branch=main
