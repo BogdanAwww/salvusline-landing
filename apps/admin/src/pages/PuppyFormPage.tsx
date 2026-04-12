@@ -8,16 +8,17 @@ const LABEL_STYLE: React.CSSProperties = { display: "block", color: "#aaa", font
 
 type GalleryImage = { id: string; url: string; sort_order: number };
 
-export default function HofFormPage() {
+export default function PuppyFormPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const isEdit = Boolean(id);
 
-  const [dogName, setDogName] = useState("");
-  const [title, setTitle] = useState("");
-  const [year, setYear] = useState("");
-  const [description, setDescription] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [photoUrl, setPhotoUrl] = useState("");
+  const [gender, setGender] = useState<"male" | "female" | "">("");
+  const [birthDate, setBirthDate] = useState("");
+  const [sire, setSire] = useState("");
+  const [dam, setDam] = useState("");
+  const [status, setStatus] = useState<"available" | "reserved" | "sold">("available");
   const [sortOrder, setSortOrder] = useState("0");
   const [gallery, setGallery] = useState<GalleryImage[]>([]);
   const [saving, setSaving] = useState(false);
@@ -26,40 +27,43 @@ export default function HofFormPage() {
 
   useEffect(() => {
     if (!id) return;
-    supabase.from("hall_of_fame").select("*, hof_images(*)").eq("id", id).single().then(({ data }) => {
+    supabase.from("puppies").select("*, puppy_images(*)").eq("id", id).single().then(({ data }) => {
       if (!data) return;
       const d = data as Record<string, unknown>;
-      setDogName(String(d.dog_name ?? ""));
-      setTitle(String(d.title ?? ""));
-      setYear(d.year != null ? String(d.year) : "");
-      setDescription(String(d.description ?? ""));
-      setImageUrl(String(d.image_url ?? ""));
+      setPhotoUrl(String(d.photo_url ?? ""));
+      setGender((d.gender as "male" | "female" | "") ?? "");
+      setBirthDate(String(d.birth_date ?? ""));
+      setSire(String(d.sire ?? ""));
+      setDam(String(d.dam ?? ""));
+      setStatus((d.status as "available" | "reserved" | "sold") ?? "available");
       setSortOrder(String(d.sort_order ?? "0"));
-      setGallery((d.hof_images as GalleryImage[]) ?? []);
+      setGallery((d.puppy_images as GalleryImage[]) ?? []);
       setLoading(false);
     });
   }, [id]);
 
   async function loadGallery() {
     if (!id) return;
-    const { data } = await supabase.from("hof_images").select("*").eq("hof_id", id).order("sort_order");
+    const { data } = await supabase.from("puppy_images").select("*").eq("puppy_id", id).order("sort_order");
     setGallery((data as GalleryImage[]) ?? []);
   }
 
   async function handleAddGalleryImage(url: string) {
     if (!id || !url) return;
-    await supabase.from("hof_images").insert({ hof_id: id, url, sort_order: gallery.length });
+    await supabase.from("puppy_images").insert({ puppy_id: id, url, sort_order: gallery.length });
     loadGallery();
   }
 
   async function handleDeleteGalleryImage(imageId: string) {
     if (!confirm("Remove this photo?")) return;
-    await supabase.from("hof_images").delete().eq("id", imageId);
+    await supabase.from("puppy_images").delete().eq("id", imageId);
     loadGallery();
   }
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
+    if (!gender) { setError("Gender is required."); return; }
+    if (!photoUrl) { setError("Photo is required."); return; }
     setSaving(true);
     setError(null);
 
@@ -68,22 +72,23 @@ export default function HofFormPage() {
 
     const payload = {
       breeder_id: (breeder as { id: string }).id,
-      dog_name: dogName,
-      title: title || null,
-      year: year ? parseInt(year, 10) : null,
-      description: description || null,
-      image_url: imageUrl || null,
+      photo_url: photoUrl,
+      gender,
+      birth_date: birthDate || null,
+      sire: sire || null,
+      dam: dam || null,
+      status,
       sort_order: parseInt(sortOrder, 10) || 0,
     };
 
     if (id) {
-      const { error: err } = await supabase.from("hall_of_fame").update(payload).eq("id", id);
+      const { error: err } = await supabase.from("puppies").update(payload).eq("id", id);
       if (err) { setError(err.message); setSaving(false); return; }
-      navigate("/hall-of-fame");
+      navigate("/puppies");
     } else {
-      const { data: newEntry, error: err } = await supabase.from("hall_of_fame").insert(payload).select("id").single();
+      const { data: newPuppy, error: err } = await supabase.from("puppies").insert(payload).select("id").single();
       if (err) { setError(err.message); setSaving(false); return; }
-      navigate(`/hall-of-fame/${(newEntry as { id: string }).id}`);
+      navigate(`/puppies/${(newPuppy as { id: string }).id}`);
     }
   }
 
@@ -92,35 +97,51 @@ export default function HofFormPage() {
   return (
     <div>
       <h1 style={{ fontSize: "1.5rem", fontWeight: 700, marginBottom: "1.5rem" }}>
-        {isEdit ? `Edit: ${dogName}` : "Add Hall of Fame Entry"}
+        {isEdit ? "Edit Puppy" : "Add Puppy"}
       </h1>
       <form onSubmit={handleSave} style={{ maxWidth: 600, display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-        <div>
-          <label style={LABEL_STYLE}>Dog Name *</label>
-          <input value={dogName} onChange={(e) => setDogName(e.target.value)} required style={INPUT_STYLE} />
-        </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem" }}>
-          <div style={{ gridColumn: "span 2" }}>
-            <label style={LABEL_STYLE}>Title / Achievement</label>
-            <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g. Champion 2× BOB" style={INPUT_STYLE} />
+        <ImageUploader label="Cover Photo *" value={photoUrl} onChange={setPhotoUrl} folder="puppies" />
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+          <div>
+            <label style={LABEL_STYLE}>Gender *</label>
+            <select value={gender} onChange={(e) => setGender(e.target.value as "male" | "female" | "")} required style={INPUT_STYLE}>
+              <option value="">—</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
           </div>
           <div>
-            <label style={LABEL_STYLE}>Year</label>
-            <input type="number" value={year} onChange={(e) => setYear(e.target.value)} placeholder="2024" min={1900} max={2100} style={INPUT_STYLE} />
+            <label style={LABEL_STYLE}>Birth Date</label>
+            <input type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} style={INPUT_STYLE} />
           </div>
         </div>
 
-        <ImageUploader label="Cover Photo" value={imageUrl} onChange={setImageUrl} folder="hall-of-fame" />
-
-        <div>
-          <label style={LABEL_STYLE}>Description</label>
-          <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={4} style={{ ...INPUT_STYLE, resize: "vertical" }} />
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+          <div>
+            <label style={LABEL_STYLE}>Sire (Father)</label>
+            <input value={sire} onChange={(e) => setSire(e.target.value)} placeholder="e.g. CH Salvusline's King" style={INPUT_STYLE} />
+          </div>
+          <div>
+            <label style={LABEL_STYLE}>Dam (Mother)</label>
+            <input value={dam} onChange={(e) => setDam(e.target.value)} placeholder="e.g. Salvusline's Queen" style={INPUT_STYLE} />
+          </div>
         </div>
 
-        <div>
-          <label style={LABEL_STYLE}>Sort Order</label>
-          <input type="number" value={sortOrder} onChange={(e) => setSortOrder(e.target.value)} min={0} style={{ ...INPUT_STYLE, width: 120 }} />
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+          <div>
+            <label style={LABEL_STYLE}>Status</label>
+            <select value={status} onChange={(e) => setStatus(e.target.value as "available" | "reserved" | "sold")} style={INPUT_STYLE}>
+              <option value="available">Available</option>
+              <option value="reserved">Reserved</option>
+              <option value="sold">Sold</option>
+            </select>
+          </div>
+          <div>
+            <label style={LABEL_STYLE}>Sort Order</label>
+            <input type="number" value={sortOrder} onChange={(e) => setSortOrder(e.target.value)} min={0} style={{ ...INPUT_STYLE, width: "100%" }} />
+          </div>
         </div>
 
         {/* Gallery — only in edit mode */}
@@ -142,7 +163,7 @@ export default function HofFormPage() {
               </div>
             )}
 
-            <ImageUploader label="Add Photo" value="" onChange={handleAddGalleryImage} folder="hall-of-fame" />
+            <ImageUploader label="Add Photo" value="" onChange={handleAddGalleryImage} folder="puppies" />
           </div>
         )}
 
@@ -150,9 +171,9 @@ export default function HofFormPage() {
 
         <div style={{ display: "flex", gap: "0.75rem" }}>
           <button type="submit" disabled={saving} style={{ padding: "0.75rem 1.5rem", background: "#EC6B15", color: "#fff", border: "none", borderRadius: 8, fontWeight: 600, cursor: saving ? "not-allowed" : "pointer", opacity: saving ? 0.7 : 1 }}>
-            {saving ? "Saving…" : isEdit ? "Save Changes" : "Add Entry"}
+            {saving ? "Saving…" : isEdit ? "Save Changes" : "Add Puppy"}
           </button>
-          <button type="button" onClick={() => navigate("/hall-of-fame")} style={{ padding: "0.75rem 1.5rem", background: "#2a2a2a", color: "#aaa", border: "none", borderRadius: 8, fontWeight: 500, fontSize: "0.9rem", cursor: "pointer" }}>
+          <button type="button" onClick={() => navigate("/puppies")} style={{ padding: "0.75rem 1.5rem", background: "#2a2a2a", color: "#aaa", border: "none", borderRadius: 8, fontWeight: 500, fontSize: "0.9rem", cursor: "pointer" }}>
             Cancel
           </button>
         </div>

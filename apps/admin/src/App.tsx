@@ -9,6 +9,10 @@ import Dogs from "./pages/Dogs";
 import DogFormPage from "./pages/DogFormPage";
 import HallOfFame from "./pages/HallOfFame";
 import HofFormPage from "./pages/HofFormPage";
+import ContentPage from "./pages/ContentPage";
+import Puppies from "./pages/Puppies";
+import PuppyFormPage from "./pages/PuppyFormPage";
+import Messages from "./pages/Messages";
 
 export default function App() {
   const [session, setSession] = useState<Session | null | undefined>(undefined);
@@ -43,6 +47,11 @@ export default function App() {
           <Route path="/hall-of-fame" element={<HallOfFame />} />
           <Route path="/hall-of-fame/new" element={<HofFormPage />} />
           <Route path="/hall-of-fame/:id" element={<HofFormPage />} />
+          <Route path="/content" element={<ContentPage />} />
+          <Route path="/puppies" element={<Puppies />} />
+          <Route path="/puppies/new" element={<PuppyFormPage />} />
+          <Route path="/puppies/:id" element={<PuppyFormPage />} />
+          <Route path="/messages" element={<Messages />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Layout>

@@ -1,5 +1,15 @@
+import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { getBreederData } from "@/lib/breeder";
+import { buildMetadata } from "@/lib/seo";
+import { PuppiesContactForm } from "@/components/PuppiesContactForm";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await getBreederData();
+  return buildMetadata(data?.breeder?.site_config ?? null, {
+    pageDescription: "Salvusline Kennel — breeders of Bull Terriers and Miniature Bull Terriers in England. Health-tested puppies bred for correct type, sound temperament, and family life.",
+  });
+}
 
 const CAROUSEL_IMAGES = Array.from({ length: 13 }, (_, i) => `/assets/dog-carousel-${i + 1}.webp`);
 
@@ -7,9 +17,8 @@ export default async function HomePage() {
   const data = await getBreederData();
   const siteConfig = data?.breeder?.site_config ?? null;
   const dogs = data?.dogs;
-  const carouselImages = dogs?.length
-    ? dogs.map((d) => d.cover_image_url ?? "").filter(Boolean)
-    : CAROUSEL_IMAGES;
+  const dbImages = dogs?.map((d) => d.cover_image_url ?? "").filter(Boolean) ?? [];
+  const carouselImages = [...dbImages, ...CAROUSEL_IMAGES];
 
   return (
     <>
@@ -71,6 +80,33 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* About the Breed */}
+      <div className="breed-info-section">
+        <div className="breed-info-container">
+          <div className="breed-info-heading">
+            <p className="breed-info-eyebrow">About the Breed</p>
+            <h2 className="breed-info-title">The Bull Terrier</h2>
+          </div>
+          <div className="breed-info-body">
+            {siteConfig?.about_breed_text ? (
+              siteConfig.about_breed_text.split("\n\n").map((p, i) =>
+                i === 0
+                  ? <p key={i} className="breed-info-lead">{p}</p>
+                  : <p key={i}>{p}</p>
+              )
+            ) : (
+              <>
+                <p className="breed-info-lead">There is no dog quite like the Bull Terrier. Instantly recognisable by its distinctive egg-shaped head, powerful build, and triangular eyes full of mischief — it is a breed unlike any other.</p>
+                <p>Developed in 19th-century England from crosses between the Bulldog and the now-extinct White English Terrier, the Bull Terrier was bred to be courageous, agile, and full of fire. Over generations, breeders refined that raw energy into a dog of extraordinary character — loyal to the bone, endlessly entertaining, and surprisingly gentle with those it loves.</p>
+                <p>Bull Terriers bond deeply with their families. They thrive on companionship and close human contact, and they give it back tenfold. Playful well into old age, they bring an energy and personality to the home that is impossible to ignore. Their stubbornness is legendary — but so is their devotion.</p>
+                <p>The Miniature Bull Terrier carries every bit of that same spirit in a smaller, more compact form. Same head, same heart, same relentless personality.</p>
+                <p>At Salvusline, we breed both the Standard and the Miniature with the same intention: dogs that are sound in body, stable in mind, and correct in type. Dogs you can be proud of in the ring — and even prouder of at home.</p>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+
       {/* Dogs carousel */}
       <section id="dogs" className="dogs">
         <div className="dogs-header">
@@ -118,7 +154,7 @@ export default async function HomePage() {
       </section>
 
       {/* Reserve */}
-      <section className="reserve">
+      <section id="reserve" className="reserve">
         <div className="reserve-container">
           <div className="reserve-content">
             <h2 className="reserve-title">
@@ -128,7 +164,7 @@ export default async function HomePage() {
               </svg>
             </h2>
             <p className="reserve-description">Book your puppy today and get ready for a new family member to arrive!</p>
-            <a href="https://ig.me/m/kateryna_salvusline" target="_blank" rel="noopener noreferrer" className="reserve-button">RESERVE NOW</a>
+            <PuppiesContactForm breederId={data?.breeder?.id} />
           </div>
         </div>
       </section>

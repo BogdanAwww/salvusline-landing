@@ -10,11 +10,14 @@ export function BreederJsonLd({ siteConfig, domain }: Props) {
 
   const data = {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": ["LocalBusiness", "Organization"],
     name: siteConfig.title,
     description: siteConfig.seo_description,
     url: `https://${domain}`,
-    logo: siteConfig.logo_url,
+    ...(siteConfig.logo_url ? {
+      logo: { "@type": "ImageObject", url: siteConfig.logo_url },
+      image: siteConfig.og_image_url ?? siteConfig.logo_url,
+    } : {}),
     sameAs: [
       siteConfig.instagram_url,
       siteConfig.tiktok_url,

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { getBreederData } from "@/lib/breeder";
 import { buildMetadata } from "@/lib/seo";
+import { DogSection } from "@/components/DogSection";
+import type { DogWithImages } from "@salvus/db";
 
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getBreederData();
@@ -12,19 +14,28 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-const FALLBACK_DOGS = Array.from({ length: 13 }, (_, i) => ({
+const FALLBACK_DOGS: DogWithImages[] = Array.from({ length: 13 }, (_, i) => ({
   id: String(i),
-  src: `/assets/dog-carousel-${i + 1}.webp`,
+  breeder_id: "",
+  slug: `dog-${i}`,
   name: "Bull Terrier",
+  full_name: null,
+  breed: "Bull Terrier",
+  gender: null,
+  birth_date: null,
+  description: null,
+  cover_image_url: `/assets/dog-carousel-${i + 1}.webp`,
+  status: "active" as const,
+  sort_order: i,
+  created_at: "",
+  dog_images: [],
 }));
 
 export default async function OurDogsPage() {
   const data = await getBreederData();
   const siteConfig = data?.breeder?.site_config ?? null;
-  const dogs = data?.dogs;
-  const displayDogs = dogs?.length
-    ? dogs.map((d) => ({ id: d.id, src: d.cover_image_url ?? "", name: d.name }))
-    : FALLBACK_DOGS;
+  const dogs = (data?.dogs ?? []) as DogWithImages[];
+  const displayDogs = dogs.length ? dogs : FALLBACK_DOGS;
 
   return (
     <>
@@ -37,22 +48,6 @@ export default async function OurDogsPage() {
           <p className="page-hero-desc">Bull Terriers and Miniature Bull Terriers bred with dedication to health, correct type, and sound temperament.</p>
         </div>
 
-        <div className="breed-info-section">
-          <div className="breed-info-container">
-            <div className="breed-info-heading">
-              <p className="breed-info-eyebrow">About the Breed</p>
-              <h2 className="breed-info-title">The Bull Terrier</h2>
-            </div>
-            <div className="breed-info-body">
-              <p className="breed-info-lead">There is no dog quite like the Bull Terrier. Instantly recognisable by its distinctive egg-shaped head, powerful build, and triangular eyes full of mischief — it is a breed unlike any other.</p>
-              <p>Developed in 19th-century England from crosses between the Bulldog and the now-extinct White English Terrier, the Bull Terrier was bred to be courageous, agile, and full of fire. Over generations, breeders refined that raw energy into a dog of extraordinary character — loyal to the bone, endlessly entertaining, and surprisingly gentle with those it loves.</p>
-              <p>Bull Terriers bond deeply with their families. They thrive on companionship and close human contact, and they give it back tenfold. Playful well into old age, they bring an energy and personality to the home that is impossible to ignore. Their stubbornness is legendary — but so is their devotion.</p>
-              <p>The Miniature Bull Terrier carries every bit of that same spirit in a smaller, more compact form. Same head, same heart, same relentless personality.</p>
-              <p>At Salvusline, we breed both the Standard and the Miniature with the same intention: dogs that are sound in body, stable in mind, and correct in type. Dogs you can be proud of in the ring — and even prouder of at home.</p>
-            </div>
-          </div>
-        </div>
-
         <div className="dogs-page-section">
           <a href="/" className="page-back">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -61,11 +56,9 @@ export default async function OurDogsPage() {
             Back to Home
           </a>
 
-          <div className="dogs-page-grid">
-            {displayDogs.map((dog) => (
-              <div key={dog.id} className="dog-page-card">
-                <img src={dog.src} alt={dog.name} loading="lazy" />
-              </div>
+          <div className="dogs-list">
+            {displayDogs.map((dog, i) => (
+              <DogSection key={dog.id} dog={dog} index={i} />
             ))}
           </div>
         </div>

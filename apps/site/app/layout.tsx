@@ -20,7 +20,7 @@ export default async function RootLayout({
   const siteConfig = data?.breeder?.site_config ?? null;
 
   return (
-    <html lang="en">
+    <html lang="en-GB">
       <head>
         <BreederJsonLd siteConfig={siteConfig} domain={SITE_DOMAIN} />
       </head>

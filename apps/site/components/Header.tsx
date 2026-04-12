@@ -62,6 +62,7 @@ export function Header({ siteConfig }: HeaderProps) {
             <nav className="nav">
               <Link href="/#about" className="nav-link">About US</Link>
               <Link href="/our-dogs" className="nav-link">Our Dogs</Link>
+              <Link href="/puppies" className="nav-link">Puppies</Link>
               <Link href="/hall-of-fame" className="nav-link">Hall of Fame</Link>
             </nav>
           </div>
@@ -96,6 +97,7 @@ export function Header({ siteConfig }: HeaderProps) {
         <nav className="mobile-nav">
           <Link href="/#about" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>About US</Link>
           <Link href="/our-dogs" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>Our Dogs</Link>
+          <Link href="/puppies" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>Puppies</Link>
           <Link href="/hall-of-fame" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>Hall of Fame</Link>
         </nav>
         <div className="mobile-social">

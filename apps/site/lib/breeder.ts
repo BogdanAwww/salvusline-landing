@@ -1,12 +1,13 @@
 import { createServerClient } from "@salvus/db";
-import type { BreederWithConfig, DogWithImages, HallOfFameEntry } from "@salvus/db";
+import type { BreederWithConfig, DogWithImages, HofEntryWithImages, PuppyWithImages } from "@salvus/db";
 
 const BREEDER_SLUG = process.env.BREEDER_SLUG ?? "salvusline";
 
 export interface BreederData {
   breeder: BreederWithConfig;
   dogs: DogWithImages[];
-  hallOfFame: HallOfFameEntry[];
+  hallOfFame: HofEntryWithImages[];
+  puppies: PuppyWithImages[];
 }
 
 export async function getBreederData(): Promise<BreederData | null> {
@@ -47,13 +48,20 @@ export async function getBreederData(): Promise<BreederData | null> {
 
   const { data: hallOfFame } = await db
     .from("hall_of_fame")
-    .select("*")
+    .select("*, hof_images(*)")
+    .eq("breeder_id", breeder.id)
+    .order("sort_order");
+
+  const { data: puppies } = await db
+    .from("puppies")
+    .select("*, puppy_images(*)")
     .eq("breeder_id", breeder.id)
     .order("sort_order");
 
   return {
     breeder,
     dogs: (dogsRaw ?? []) as DogWithImages[],
-    hallOfFame: hallOfFame ?? [],
+    hallOfFame: (hallOfFame ?? []) as HofEntryWithImages[],
+    puppies: (puppies ?? []) as PuppyWithImages[],
   };
 }

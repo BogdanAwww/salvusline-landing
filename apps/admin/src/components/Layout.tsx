@@ -1,20 +1,39 @@
 import { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 
 const NAV = [
   { to: "/", label: "Dashboard" },
   { to: "/dogs", label: "Dogs" },
+  { to: "/puppies", label: "Puppies" },
   { to: "/hall-of-fame", label: "Hall of Fame" },
+  { to: "/content", label: "Content" },
+  { to: "/messages", label: "Messages" },
 ];
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [email, setEmail] = useState("");
+  const [unread, setUnread] = useState(0);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setEmail(data.user?.email ?? ""));
   }, []);
+
+  useEffect(() => {
+    async function loadUnread() {
+      const { data: breeder } = await supabase.from("breeders").select("id").single();
+      if (!breeder) return;
+      const { count } = await supabase
+        .from("contact_messages")
+        .select("id", { count: "exact", head: true })
+        .eq("breeder_id", (breeder as { id: string }).id)
+        .eq("is_read", false);
+      setUnread(count ?? 0);
+    }
+    loadUnread();
+  }, [location.pathname]); // re-check when navigating (e.g. after marking read)
 
   async function handleSignOut() {
     await supabase.auth.signOut();
@@ -35,7 +54,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               to={to}
               end={to === "/"}
               style={({ isActive }) => ({
-                display: "block",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
                 padding: "0.65rem 1.25rem",
                 color: isActive ? "#fff" : "#aaa",
                 textDecoration: "none",
@@ -45,6 +66,21 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               })}
             >
               {label}
+              {to === "/messages" && unread > 0 && (
+                <span style={{
+                  background: "#EC6B15",
+                  color: "#fff",
+                  fontSize: "0.7rem",
+                  fontWeight: 700,
+                  lineHeight: 1,
+                  padding: "0.2rem 0.45rem",
+                  borderRadius: 20,
+                  minWidth: 18,
+                  textAlign: "center",
+                }}>
+                  {unread > 99 ? "99+" : unread}
+                </span>
+              )}
             </NavLink>
           ))}
         </nav>
