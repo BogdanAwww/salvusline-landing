@@ -70,7 +70,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy apps/site/out --project-name=rapid-glade-0cc0 --branch=main
+          command: pages deploy apps/site/out --project-name=salvusline-site --branch=main
 
   # ─── Build + deploy admin panel ──────────────────────────────────────────────
   deploy-admin:
@@ -108,4 +108,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy apps/admin/dist --project-name=autumn-meadow-5894 --branch=main
+          command: pages deploy apps/admin/dist --project-name=salvusline-admin --branch=main
