@@ -105,6 +105,22 @@ create table hof_images (
   sort_order int default 0
 );
 
+-- Blog posts
+create table blog_posts (
+  id uuid primary key default gen_random_uuid(),
+  breeder_id uuid not null references breeders(id) on delete cascade,
+  slug text not null,
+  title text not null,
+  excerpt text,
+  content text,
+  cover_image_url text,
+  published boolean default false,
+  sort_order int default 0,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now(),
+  unique(breeder_id, slug)
+);
+
 -- ─── Row Level Security ───────────────────────────────────────────────────────
 
 alter table breeders enable row level security;
@@ -116,6 +132,7 @@ alter table contact_messages enable row level security;
 alter table puppies enable row level security;
 alter table puppy_images enable row level security;
 alter table hof_images enable row level security;
+alter table blog_posts enable row level security;
 
 -- Public read (used at SSG build time via service role, but readable for safety)
 create policy "public read breeders"     on breeders     for select using (true);
@@ -135,6 +152,7 @@ create policy "owner manages contact_messages" on contact_messages
 create policy "public read puppies"      on puppies      for select using (true);
 create policy "public read puppy_images" on puppy_images for select using (true);
 create policy "public read hof_images"   on hof_images   for select using (true);
+create policy "public read blog_posts"   on blog_posts   for select using (true);
 
 -- Owner manages their own data
 create policy "owner manages breeders" on breeders
@@ -182,4 +200,9 @@ create policy "owner manages hof_images" on hof_images
       select id from hall_of_fame
       where breeder_id in (select id from breeders where owner_user_id = auth.uid())
     )
+  );
+
+create policy "owner manages blog_posts" on blog_posts
+  for all using (
+    breeder_id in (select id from breeders where owner_user_id = auth.uid())
   );

@@ -13,6 +13,8 @@ import ContentPage from "./pages/ContentPage";
 import Puppies from "./pages/Puppies";
 import PuppyFormPage from "./pages/PuppyFormPage";
 import Messages from "./pages/Messages";
+import BlogPosts from "./pages/BlogPosts";
+import BlogFormPage from "./pages/BlogFormPage";
 
 export default function App() {
   const [session, setSession] = useState<Session | null | undefined>(undefined);
@@ -51,6 +53,9 @@ export default function App() {
           <Route path="/puppies" element={<Puppies />} />
           <Route path="/puppies/new" element={<PuppyFormPage />} />
           <Route path="/puppies/:id" element={<PuppyFormPage />} />
+          <Route path="/blog" element={<BlogPosts />} />
+          <Route path="/blog/new" element={<BlogFormPage />} />
+          <Route path="/blog/:id" element={<BlogFormPage />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

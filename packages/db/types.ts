@@ -221,6 +221,35 @@ export type Database = {
         };
         Update: Partial<Database["public"]["Tables"]["hof_images"]["Insert"]>;
       };
+      blog_posts: {
+        Row: {
+          id: string;
+          breeder_id: string;
+          slug: string;
+          title: string;
+          excerpt: string | null;
+          content: string | null;
+          cover_image_url: string | null;
+          published: boolean;
+          sort_order: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          breeder_id: string;
+          slug: string;
+          title: string;
+          excerpt?: string | null;
+          content?: string | null;
+          cover_image_url?: string | null;
+          published?: boolean;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["blog_posts"]["Insert"]>;
+      };
     };
   };
 };
@@ -235,6 +264,7 @@ export type ContactMessage = Database["public"]["Tables"]["contact_messages"]["R
 export type Puppy = Database["public"]["Tables"]["puppies"]["Row"];
 export type PuppyImage = Database["public"]["Tables"]["puppy_images"]["Row"];
 export type HofImage = Database["public"]["Tables"]["hof_images"]["Row"];
+export type BlogPost = Database["public"]["Tables"]["blog_posts"]["Row"];
 
 export type PuppyWithImages = Puppy & { puppy_images: PuppyImage[] };
 export type HofEntryWithImages = HallOfFameEntry & { hof_images: HofImage[] };

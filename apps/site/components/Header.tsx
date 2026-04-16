@@ -64,6 +64,7 @@ export function Header({ siteConfig }: HeaderProps) {
               <Link href="/our-dogs" className="nav-link">Our Dogs</Link>
               <Link href="/puppies" className="nav-link">Puppies</Link>
               <Link href="/hall-of-fame" className="nav-link">Hall of Fame</Link>
+              <Link href="/blog" className="nav-link">Blog</Link>
             </nav>
           </div>
           <div className="header-right">
@@ -99,6 +100,7 @@ export function Header({ siteConfig }: HeaderProps) {
           <Link href="/our-dogs" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>Our Dogs</Link>
           <Link href="/puppies" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>Puppies</Link>
           <Link href="/hall-of-fame" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>Hall of Fame</Link>
+          <Link href="/blog" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>Blog</Link>
         </nav>
         <div className="mobile-social">
           {socialLinks.map(({ href, label, icon }) => (

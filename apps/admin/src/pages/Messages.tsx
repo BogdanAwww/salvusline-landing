@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
+import useIsMobile from "../hooks/useIsMobile";
 
 type Message = {
   id: string;
@@ -19,6 +20,7 @@ function formatDate(iso: string) {
 export default function Messages() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
+  const isMobile = useIsMobile();
 
   async function load() {
     const { data: breeder } = await supabase.from("breeders").select("id").single();
@@ -47,12 +49,12 @@ export default function Messages() {
 
   const unread = messages.filter((m) => !m.is_read).length;
 
-  if (loading) return <p style={{ color: "#666" }}>Loading…</p>;
+  if (loading) return <p style={{ color: "#666" }}>Loading...</p>;
 
   return (
     <div>
       <div style={{ marginBottom: "1.5rem" }}>
-        <h1 style={{ fontSize: "1.5rem", fontWeight: 700 }}>Messages</h1>
+        <h1 style={{ fontSize: isMobile ? "1.25rem" : "1.5rem", fontWeight: 700 }}>Messages</h1>
         <p style={{ color: "#666", fontSize: "0.9rem", marginTop: 4 }}>
           {messages.length} total · {unread} unread
         </p>
@@ -66,13 +68,13 @@ export default function Messages() {
               background: "#1a1a1a",
               border: `1px solid ${msg.is_read ? "#2a2a2a" : "rgba(236,107,21,0.35)"}`,
               borderRadius: 10,
-              padding: "1.25rem",
+              padding: isMobile ? "1rem" : "1.25rem",
               display: "flex",
               flexDirection: "column",
               gap: "0.75rem",
             }}
           >
-            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "1rem" }}>
+            <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "flex-start" : "flex-start", justifyContent: "space-between", gap: isMobile ? "0.25rem" : "1rem" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
                 {!msg.is_read && (
                   <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#EC6B15", flexShrink: 0, display: "inline-block" }} />

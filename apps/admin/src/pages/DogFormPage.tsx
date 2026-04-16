@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import ImageUploader from "../components/ImageUploader";
+import useIsMobile from "../hooks/useIsMobile";
 
 const INPUT_STYLE: React.CSSProperties = { width: "100%", padding: "0.75rem", background: "#111", border: "1px solid #333", borderRadius: 8, color: "#fff", fontSize: "0.9rem" };
 const LABEL_STYLE: React.CSSProperties = { display: "block", color: "#aaa", fontSize: "0.8rem", marginBottom: "0.4rem" };
@@ -12,6 +13,7 @@ export default function DogFormPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const isEdit = Boolean(id);
+  const isMobile = useIsMobile();
 
   const [name, setName] = useState("");
   const [fullName, setFullName] = useState("");
@@ -91,20 +93,22 @@ export default function DogFormPage() {
     } else {
       const { data: newDog, error: err } = await supabase.from("dogs").insert(payload).select("id").single();
       if (err) { setError(err.message); setSaving(false); return; }
-      // Redirect to edit page so user can add gallery photos right away
       navigate(`/dogs/${(newDog as { id: string }).id}`);
     }
   }
 
-  if (loading) return <p style={{ color: "#666" }}>Loading…</p>;
+  if (loading) return <p style={{ color: "#666" }}>Loading...</p>;
+
+  const gridCols2 = isMobile ? "1fr" : "1fr 1fr";
+  const gridCols3 = isMobile ? "1fr" : "1fr 1fr 1fr";
 
   return (
     <div>
-      <h1 style={{ fontSize: "1.5rem", fontWeight: 700, marginBottom: "1.5rem" }}>
+      <h1 style={{ fontSize: isMobile ? "1.25rem" : "1.5rem", fontWeight: 700, marginBottom: "1.5rem" }}>
         {isEdit ? `Edit Dog — ${name}` : "Add Dog"}
       </h1>
       <form onSubmit={handleSave} style={{ maxWidth: 600, display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: gridCols2, gap: "1rem" }}>
           <div>
             <label style={LABEL_STYLE}>Name *</label>
             <input value={name} onChange={(e) => setName(e.target.value)} required style={INPUT_STYLE} placeholder="e.g. Rex" />
@@ -115,7 +119,7 @@ export default function DogFormPage() {
           </div>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: gridCols3, gap: "1rem" }}>
           <div>
             <label style={LABEL_STYLE}>Breed</label>
             <input value={breed} onChange={(e) => setBreed(e.target.value)} style={INPUT_STYLE} />
@@ -150,13 +154,12 @@ export default function DogFormPage() {
           </select>
         </div>
 
-        {/* Gallery — only available after the dog is saved */}
         {isEdit && (
           <div style={{ paddingTop: "0.5rem", borderTop: "1px solid #2a2a2a" }}>
             <label style={{ ...LABEL_STYLE, fontSize: "0.9rem", marginBottom: "1rem" }}>Gallery Photos</label>
 
             {gallery.length > 0 && (
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))", gap: "0.5rem", marginBottom: "1rem" }}>
+              <div style={{ display: "grid", gridTemplateColumns: `repeat(auto-fill, minmax(${isMobile ? "80px" : "100px"}, 1fr))`, gap: "0.5rem", marginBottom: "1rem" }}>
                 {gallery.map((img) => (
                   <div key={img.id} style={{ position: "relative", aspectRatio: "1" }}>
                     <img src={img.url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: 8, display: "block" }} />
@@ -164,7 +167,7 @@ export default function DogFormPage() {
                       onClick={() => handleDeleteGalleryImage(img.id)}
                       style={{ position: "absolute", top: 4, right: 4, width: 22, height: 22, borderRadius: "50%", background: "rgba(0,0,0,0.7)", color: "#fff", border: "none", cursor: "pointer", fontSize: "0.75rem", display: "flex", alignItems: "center", justifyContent: "center", lineHeight: 1 }}
                     >
-                      ×
+                      x
                     </button>
                   </div>
                 ))}
@@ -184,7 +187,7 @@ export default function DogFormPage() {
 
         <div style={{ display: "flex", gap: "0.75rem" }}>
           <button type="submit" disabled={saving} style={{ padding: "0.75rem 1.5rem", background: "#EC6B15", color: "#fff", border: "none", borderRadius: 8, fontWeight: 600, cursor: saving ? "not-allowed" : "pointer", opacity: saving ? 0.7 : 1 }}>
-            {saving ? "Saving…" : isEdit ? "Save Changes" : "Add Dog"}
+            {saving ? "Saving..." : isEdit ? "Save Changes" : "Add Dog"}
           </button>
           <button type="button" onClick={() => navigate("/dogs")} style={{ padding: "0.75rem 1.5rem", background: "#2a2a2a", color: "#aaa", border: "none", borderRadius: 8, fontWeight: 500, fontSize: "0.9rem", cursor: "pointer" }}>
             Cancel

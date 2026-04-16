@@ -23,11 +23,10 @@ export default function Login() {
     setError(null);
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) { setError(error.message); setLoading(false); }
-    // On success, App.tsx session listener will re-render automatically
   }
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#0f0f0f" }}>
+    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#0f0f0f", padding: "1rem" }}>
       <div style={{ width: "100%", maxWidth: 400, padding: "2rem", background: "#1a1a1a", borderRadius: 12, border: "1px solid #2a2a2a" }}>
         <h1 style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 700, marginBottom: "0.5rem" }}>Admin Panel</h1>
         <p style={{ color: "#666", marginBottom: "2rem", fontSize: "0.9rem" }}>Sign in to manage your breeder site</p>
@@ -42,7 +41,7 @@ export default function Login() {
           </div>
           {error && <p style={{ color: "#f87171", fontSize: "0.85rem", background: "rgba(239,68,68,0.1)", padding: "0.75rem", borderRadius: 8 }}>{error}</p>}
           <button type="submit" disabled={loading} style={{ padding: "0.875rem", background: "#EC6B15", color: "#fff", border: "none", borderRadius: 8, fontSize: "1rem", fontWeight: 600, cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1 }}>
-            {loading ? "Signing in…" : "Sign in"}
+            {loading ? "Signing in..." : "Sign in"}
           </button>
         </form>
       </div>

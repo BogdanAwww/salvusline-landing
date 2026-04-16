@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
+import useIsMobile from "../hooks/useIsMobile";
 
 type BuildStatus = "idle" | "triggering" | "triggered" | "error";
 
@@ -9,6 +10,7 @@ export default function Dashboard() {
   const [breederSlug, setBreederSlug] = useState("salvusline");
   const [buildStatus, setBuildStatus] = useState<BuildStatus>("idle");
   const [buildMessage, setBuildMessage] = useState<string | null>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     async function load() {
@@ -71,18 +73,18 @@ export default function Dashboard() {
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "2rem" }}>
+      <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", justifyContent: "space-between", alignItems: isMobile ? "stretch" : "flex-start", gap: isMobile ? "1rem" : "1rem", marginBottom: "2rem" }}>
         <div>
-          <h1 style={{ fontSize: "1.5rem", fontWeight: 700, marginBottom: "0.25rem" }}>Dashboard</h1>
+          <h1 style={{ fontSize: isMobile ? "1.25rem" : "1.5rem", fontWeight: 700, marginBottom: "0.25rem" }}>Dashboard</h1>
           <p style={{ color: "#666", fontSize: "0.9rem" }}>Manage your breeder website</p>
         </div>
-        <div style={{ textAlign: "right" }}>
+        <div style={{ textAlign: isMobile ? "left" : "right" }}>
           <button
             onClick={handlePublish}
             disabled={buildStatus === "triggering"}
-            style={{ padding: "0.75rem 1.5rem", background: buildStatus === "triggered" ? "#16a34a" : "#EC6B15", color: "#fff", border: "none", borderRadius: 8, fontWeight: 600, fontSize: "0.9rem", cursor: buildStatus === "triggering" ? "not-allowed" : "pointer", opacity: buildStatus === "triggering" ? 0.7 : 1 }}
+            style={{ padding: "0.75rem 1.5rem", background: buildStatus === "triggered" ? "#16a34a" : "#EC6B15", color: "#fff", border: "none", borderRadius: 8, fontWeight: 600, fontSize: "0.9rem", cursor: buildStatus === "triggering" ? "not-allowed" : "pointer", opacity: buildStatus === "triggering" ? 0.7 : 1, width: isMobile ? "100%" : "auto" }}
           >
-            {{ idle: "Publish Site", triggering: "Triggering…", triggered: "Build Triggered", error: "Retry Publish" }[buildStatus]}
+            {{ idle: "Publish Site", triggering: "Triggering...", triggered: "Build Triggered", error: "Retry Publish" }[buildStatus]}
           </button>
           {buildMessage && (
             <p style={{ marginTop: "0.5rem", fontSize: "0.8rem", color: buildStatus === "error" ? "#f87171" : "#4ade80" }}>{buildMessage}</p>
@@ -90,10 +92,10 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "1rem" }}>
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(auto-fit, minmax(180px, 1fr))", gap: "1rem" }}>
         {[{ label: "Dogs", value: dogCount }, { label: "Hall of Fame", value: hofCount }].map(({ label, value }) => (
-          <div key={label} style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: 10, padding: "1.25rem" }}>
-            <div style={{ fontSize: "2rem", fontWeight: 700, color: "#EC6B15" }}>{value}</div>
+          <div key={label} style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: 10, padding: isMobile ? "1rem" : "1.25rem" }}>
+            <div style={{ fontSize: isMobile ? "1.5rem" : "2rem", fontWeight: 700, color: "#EC6B15" }}>{value}</div>
             <div style={{ color: "#666", fontSize: "0.85rem", marginTop: 4 }}>{label}</div>
           </div>
         ))}

@@ -1,5 +1,5 @@
 import { createServerClient } from "@salvus/db";
-import type { BreederWithConfig, DogWithImages, HofEntryWithImages, PuppyWithImages } from "@salvus/db";
+import type { BreederWithConfig, DogWithImages, HofEntryWithImages, PuppyWithImages, BlogPost } from "@salvus/db";
 
 const BREEDER_SLUG = process.env.BREEDER_SLUG ?? "salvusline";
 
@@ -8,6 +8,7 @@ export interface BreederData {
   dogs: DogWithImages[];
   hallOfFame: HofEntryWithImages[];
   puppies: PuppyWithImages[];
+  blogPosts: BlogPost[];
 }
 
 export async function getBreederData(): Promise<BreederData | null> {
@@ -58,10 +59,18 @@ export async function getBreederData(): Promise<BreederData | null> {
     .eq("breeder_id", breeder.id)
     .order("sort_order");
 
+  const { data: blogPosts } = await db
+    .from("blog_posts")
+    .select("*")
+    .eq("breeder_id", breeder.id)
+    .eq("published", true)
+    .order("sort_order");
+
   return {
     breeder,
     dogs: (dogsRaw ?? []) as DogWithImages[],
     hallOfFame: (hallOfFame ?? []) as HofEntryWithImages[],
     puppies: (puppies ?? []) as PuppyWithImages[],
+    blogPosts: (blogPosts ?? []) as BlogPost[],
   };
 }

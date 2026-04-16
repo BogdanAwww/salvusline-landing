@@ -14,4 +14,5 @@ export type {
   PuppyWithImages,
   HofEntryWithImages,
   ContactMessage,
+  BlogPost,
 } from "./types";
