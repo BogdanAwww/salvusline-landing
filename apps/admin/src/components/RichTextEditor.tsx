@@ -5,7 +5,7 @@ import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
 import { useRef, useCallback } from "react";
 import imageCompression from "browser-image-compression";
-import { supabase } from "../lib/supabase";
+import { uploadMedia } from "../lib/uploadMedia";
 
 interface RichTextEditorProps {
   value: string;
@@ -27,15 +27,12 @@ function MenuBar({ editor }: { editor: ReturnType<typeof useEditor> }) {
       fileType: "image/webp",
     }).catch(() => file);
 
-    const filename = `blog/${Date.now()}-${Math.random().toString(36).slice(2)}.webp`;
-    const { data, error } = await supabase.storage
-      .from("media")
-      .upload(filename, compressed, { contentType: "image/webp", upsert: false });
-
-    if (error || !data) return;
-
-    const { data: { publicUrl } } = supabase.storage.from("media").getPublicUrl(data.path);
-    editor.chain().focus().setImage({ src: publicUrl }).run();
+    try {
+      const publicUrl = await uploadMedia(compressed, "blog");
+      editor.chain().focus().setImage({ src: publicUrl }).run();
+    } catch {
+      // silently fail — user can retry
+    }
   }
 
   function handleAddLink() {

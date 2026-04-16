@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import imageCompression from "browser-image-compression";
-import { supabase } from "../lib/supabase";
+import { uploadMedia } from "../lib/uploadMedia";
 
 interface ImageUploaderProps {
   value: string;
@@ -41,22 +41,15 @@ export default function ImageUploader({
     const optimizedSize = compressed.size;
     const savedPct = Math.round((1 - optimizedSize / originalSize) * 100);
 
-    const filename = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.webp`;
-
-    const { data, error: uploadError } = await supabase.storage
-      .from("media")
-      .upload(filename, compressed, { contentType: "image/webp", upsert: false });
-
-    if (uploadError) {
-      setError(uploadError.message);
+    try {
+      const publicUrl = await uploadMedia(compressed, folder);
+      onChange(publicUrl);
+      if (savedPct > 0) setSavings(`${savedPct}%`);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Upload failed");
+    } finally {
       setUploading(false);
-      return;
     }
-
-    const { data: { publicUrl } } = supabase.storage.from("media").getPublicUrl(data.path);
-    onChange(publicUrl);
-    if (savedPct > 0) setSavings(`${savedPct}%`);
-    setUploading(false);
   }
 
   function handleFiles(files: FileList | null) {
@@ -98,7 +91,7 @@ export default function ImageUploader({
             <img src={value} alt="Preview" style={{ width: 80, height: 80, objectFit: "cover", borderRadius: 8, flexShrink: 0 }} />
             <div style={{ flex: 1 }}>
               <p style={{ color: "#aaa", fontSize: "0.8rem", margin: 0, wordBreak: "break-all" }}>
-                {uploading ? "Uploading…" : value.split("/").pop()}
+                {uploading ? "Uploading..." : value.split("/").pop()}
               </p>
               {savings && <p style={{ color: "#4ade80", fontSize: "0.75rem", margin: "0.25rem 0 0" }}>Optimized — saved {savings}</p>}
               {!uploading && <p style={{ color: "#EC6B15", fontSize: "0.75rem", margin: "0.25rem 0 0" }}>Click to replace</p>}
@@ -110,7 +103,7 @@ export default function ImageUploader({
               <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             <p style={{ color: "#555", fontSize: "0.85rem", margin: 0, textAlign: "center" }}>
-              {uploading ? "Uploading and optimizing…" : "Drop image here or click to upload"}
+              {uploading ? "Uploading and optimizing..." : "Drop image here or click to upload"}
             </p>
             <p style={{ color: "#444", fontSize: "0.75rem", margin: 0 }}>PNG, JPG, WebP · Max 20 MB · Auto-converted to WebP</p>
           </>
